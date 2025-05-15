@@ -1,7 +1,10 @@
-FROM bitnami/node:22.15.0-debian-12-r1
+FROM node:24.0.1-slim
 
-RUN apt-get upgrade && \
-    apt-get update -y && \
+# Install system packages
+USER root
+
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
     apt-get install -y \
         libglib2.0-0 \
         libnss3 \
@@ -20,22 +23,30 @@ RUN apt-get upgrade && \
         xdg-utils \
         fonts-liberation \
         libappindicator3-1 \
-        chromium-driver chromium
+        chromium \
+        curl \
+        git \
+        dumb-init
 
+# Create user and working directory
 RUN groupadd -r test-agent && useradd -m -r -g test-agent test-agent
 WORKDIR /home/test-agent
-# COPY ./webdriver-io .
 
-RUN mkdir /home/test-agent/test \
-    && mkdir /home/test-agent/reports 
-COPY ./webdriver-io/test /home/test-agent/test
-COPY ./webdriver-io/package.json .
-COPY ./webdriver-io/package-lock.json .
-COPY ./webdriver-io/tsconfig.json .
-COPY ./webdriver-io/wdio.conf.ts .
+# Copy project files
+COPY ./webdriver-io/package.json ./
+COPY ./webdriver-io/package-lock.json ./
 
-RUN npm install -y
+# Clean install with no cache
+RUN npm cache clean --force && \
+    rm -rf node_modules && \
+    npm install --no-audit --prefer-online
 
+# Copy source files after install to avoid cache busting
+COPY ./webdriver-io/test ./test
+COPY ./webdriver-io/tsconfig.json ./tsconfig.json
+COPY ./webdriver-io/wdio.conf.ts ./wdio.conf.ts
+
+# Switch to unprivileged user
 USER test-agent
 
 CMD ["tail", "-f", "/dev/null"]
