@@ -36,6 +36,6 @@ COPY ./webdriver-io/wdio.conf.ts .
 
 RUN npm install -y
 
-# USER test-agent
+USER test-agent
 
 CMD ["tail", "-f", "/dev/null"]
