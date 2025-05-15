@@ -1,0 +1,17 @@
+{
+  "name": "webdriver-io-agent",
+  "version": "1.0.0",
+  "author": "webdriver-io-agent",
+  "devDependencies": {
+    "@wdio/cli": "^9.13.0",
+    "@wdio/cucumber-framework": "^9.13.0",
+    "@wdio/dot-reporter": "^9.13.0",
+    "@wdio/jasmine-framework": "^9.13.0",
+    "@wdio/local-runner": "^9.13.0",
+    "@wdio/mocha-framework": "^9.13.0",
+    "@wdio/spec-reporter": "^9.13.0",
+    "chromedriver": "^136.0.2",
+    "wdio-chromedriver-service": "^8.1.1",
+    "wdio-json-html-reporter": "^1.5.9"
+  }
+}

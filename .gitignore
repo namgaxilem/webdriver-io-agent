@@ -1,0 +1,5 @@
+**node_modules**
+.npm
+.tmp
+webdriver-io/driver-logs
+webdriver-io/reports
